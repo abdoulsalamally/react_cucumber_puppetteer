@@ -46,17 +46,21 @@ When("l'utilisateur entre des identifiants invalides", async () => {
 });
 
 // Étape pour vérifier le message d'erreur et rester sur la page de connexion
-Then(
-  "l'utilisateur devrait voir un message d'erreur indiquant une connexion invalide",
+Then("l'utilisateur devrait voir un message d'erreur indiquant une connexion invalide",
   async () => {
-    await page.waitForSelector(".p-toast-message-error", { visible: true });
-    const errorMessage = await page.$eval(
-      ".p-toast-message-error",
-      (el) => el.textContent
-    );
-    expect(errorMessage).to.include("Identifiants incorrects");
+    const dialogMessage = await page.evaluate(() => {
+      return new Promise((resolve) => {
+        const originalAlert = window.alert;
+        window.alert = (msg) => {
+          resolve(msg);
+          window.alert = originalAlert; // Restore alert
+        };
+      });
+    });
+    expect(dialogMessage).to.include("Identifiants incorrects");
   }
 );
+
 
 Then("l'utilisateur devrait rester sur la page de connexion", async () => {
   const url = page.url();

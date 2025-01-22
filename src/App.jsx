@@ -37,7 +37,7 @@ function Login() {
     } else {
       setTimeout(() => {
         setLoading(false);
-        alert("Invalid email or password!");
+        alert("Identifiants incorrects");
       }, 2000); // 2-second delay
    
     }
