@@ -3,8 +3,6 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-route
 import Dashboard from "./pages/dashboard/Dashboard";
 import "./App.css";
 
-
-
 function App() {
   return (
     <Router>
@@ -20,32 +18,37 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(""); // State for error message
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
     setLoading(true);
+    setError(""); // Clear error message before login attempt
 
-  
-    // Simulate authentication logic (you can replace this with API calls)
+    // Simulate authentication logic
     if (email === "abdoul@cucumber.com" && password === "12345") {
-      // Simulate a delay before navigating (e.g., API call delay)
-        setTimeout(() => {
-          setLoading(false);
-          navigate("/dashboard");
-        }, 2000); // 2-second delay
+      setTimeout(() => {
+        setLoading(false);
+        navigate("/dashboard");
+      }, 2000); // 2-second delay
     } else {
       setTimeout(() => {
         setLoading(false);
+        setError("Identifiants incorrects"); // Set error message
         alert("Identifiants incorrects");
       }, 2000); // 2-second delay
-   
     }
   };
 
   return (
     <div style={styles.container}>
       <div style={styles.formContainer}>
+        {error && ( // Show error card if error exists
+          <div style={styles.errorCard}>
+            <p style={styles.errorText}>{error}</p>
+          </div>
+        )}
         <h2 style={styles.title}>Welcome Back</h2>
         <p style={styles.subtitle}>Please login to your account</p>
         <form onSubmit={handleLogin} style={styles.form}>
@@ -90,7 +93,6 @@ function Login() {
       </div>
     </div>
   );
-
 }
 
 const styles = {
@@ -108,6 +110,20 @@ const styles = {
     borderRadius: "10px",
     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
     textAlign: "center",
+    position: "relative",
+  },
+  errorCard: {
+    backgroundColor: "#ffdddd",
+    padding: "10px",
+    borderRadius: "5px",
+    marginBottom: "15px",
+    border: "1px solid #ffcccc",
+    textAlign: "left",
+  },
+  errorText: {
+    color: "#d8000c",
+    fontSize: "14px",
+    margin: 0,
   },
   title: {
     fontSize: "24px",
@@ -177,16 +193,3 @@ const styles = {
 };
 
 export default App;
-
-
-
-
-
-
-
-
-
-
-
-
-
